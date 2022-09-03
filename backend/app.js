@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const errorMiddleware = require('./middleware/error');
 
 
 const app = express();
@@ -11,7 +12,6 @@ app.use(express.json());
 
 //Route imports
 const usersRouter = require('./routes/usersRoutes');
-const errorMiddleware = require('./middleware/error');
 
 
 

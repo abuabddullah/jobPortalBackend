@@ -1,5 +1,6 @@
 const catchAsyncErrorsMiddleware = require("../middleware/catchAsyncErrorsMiddleware");
 const userModel = require("../models/usersModel");
+const ApiFeatures = require("../utils/apiFeatures");
 
 
 
@@ -15,10 +16,17 @@ exports.createUser = catchAsyncErrorsMiddleware(async (req, res, next) => {
 
 // Get All users
 exports.getAllUsers = catchAsyncErrorsMiddleware(async (req, res, next) => {
-    const users = await userModel.find();
+    const limit = req.query.limit;
+    const usersCount = await userModel.countDocuments();
+
+    const apiFeature = new ApiFeatures(userModel.find(), req.query)
+        .pagination(limit);
+
+    const users = await apiFeature.query;
+
     res.status(200).json({
         success: true,
-        message: "getAllUsers route is working",
+        message: limit && limit <= usersCount ? `${limit} user is showing out of ${usersCount} users` : `All ${usersCount} users are showing`,
         users,
     });
 });
@@ -83,5 +91,17 @@ exports.getUserDetails = catchAsyncErrorsMiddleware(async (req, res, next) => {
         success: true,
         message: "getUserDetails route is working",
         user,
+    });
+})
+
+
+// Get a random user from the database
+exports.getRandomUser = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const users = await userModel.find();
+    const randomUser = users[Math.floor(Math.random() * users.length)];
+    res.status(200).json({
+        success: true,
+        message: "getRandomUser route is working",
+        randomUser,
     });
 })

@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllUsers, createUser, updateUser, deleteUser, getUserDetails } = require("../controllers/usersController");
+const { getAllUsers, createUser, updateUser, deleteUser, getUserDetails, getRandomUser } = require("../controllers/usersController");
 
 
 
@@ -7,6 +7,7 @@ const router = express.Router();
 
 
 
+router.route("/random/").get(getRandomUser);
 router.route("/all").get(getAllUsers);
 router.route("/save").post(createUser);
 router.route("/update/:id").patch(updateUser);
