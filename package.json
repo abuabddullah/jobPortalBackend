@@ -4,10 +4,13 @@
   "description": "",
   "main": "backend/server.js",
   "scripts": {
-    "start2222222": "node backend/server.js",
-    "start-dev2222222": "nodemon backend/server.js",
     "start": "node assacc01/index.js",
     "start-dev": "nodemon assacc01/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "scriptsComments": {
+    "start": "node backend/server.js",
+    "start-dev": "nodemon backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
