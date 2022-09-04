@@ -105,3 +105,16 @@ exports.getRandomUser = catchAsyncErrorsMiddleware(async (req, res, next) => {
         randomUser,
     });
 })
+
+// update multiple users information based on given id and information through body
+exports.updateMultipleUsers = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const users = await userModel.updateMany(
+        { _id: { $in: req.body.ids } },
+        { $set: { name: req.body.name } }
+    );
+    res.status(200).json({
+        success: true,
+        message: "updateMultipleUsers route is working",
+        users,
+    });
+})
