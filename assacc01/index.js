@@ -99,7 +99,7 @@ app.patch('/user/update/:id', (req, res) => {
 
 // update mulit user's information by update many
 app.patch('/user/bulk-update', (req, res) => {
-    
+
     //  req.body থেকে reqBody Obj কে নিব যেখানে প্রথম keyতে idsArray আছে আর বাকি গুলা হচ্ছে data4updateArray
     const reqBody = req.body
     const splittedReqBodyObj = Object.entries(reqBody)
@@ -111,18 +111,18 @@ app.patch('/user/bulk-update', (req, res) => {
 
     // এবার database থেকে existingUsers নিয়ে আসব
     const existingUsers = getUserData()
-    
+
     // এবার existingUsers থেকে idsArray এর সাথে মিলে যাওয়া findRequiredUsers গুলাকে নিয়ে আসব
     const findRequiredUsers = existingUsers.filter(element => idsArray.includes(element.id));
     if (findRequiredUsers.length !== idsArray.length) {
         return res.status(409).send({ error: true, msg: 'user not exist' })
     }
-    
-    
+
+
     // এবার existingUsers থেকে idsArray এর সাথে না মিলে যাওয়া nonUpdatedUsers গুলাকে নিয়ে আসব
     const nonUpdatedUsers = existingUsers.filter(user => !idsArray.includes(user.id))
-    
-    
+
+
     // এবার findRequiredUsers এর উপরে forOf loop চালিয়ে তার ভিতরে individual theUser2update এর উপড়ে forIn loop চালিয়ে তার ভিতরে individual key গুলার সাথে data4updateObj এর সাথে মিলে যাওয়া key গুলার value আপডেট করব আর যেই যেই key গুলা না মিলে তাদেরকে theUser2update এর সাথে মার্জ করে theUpdatedUsers এ push করব
     let theUpdatedUsers = []
     for (let theUser2update of findRequiredUsers) {
@@ -180,6 +180,17 @@ app.get('/', (req, res) => {
     const output = { value: 'hello world!' }
     res.send(output)
 })
+
+// Not found route
+app.all("*", (req, res) => {
+    res.send("NO route found.");
+});
+
+
+
+
+
+
 
 //configure the server port
 app.listen(5000, () => {
