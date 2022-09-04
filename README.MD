@@ -377,8 +377,8 @@ module.exports = app;
 
 
 
-### Handling asynchronus error : [1:12:10 - 1:16:52]
-
+### Handling asynchronus error
+<br/>
 ####
 8. এবার **_asynch error_** কে handle করার জন্য  আরো একটা middleware বানাতে হবে ExpressBoilerTemplate/backend/middleware/**catchAsyncErrorsMiddleware.js** নামের,
 
@@ -424,7 +424,8 @@ exports.getAllUsers = catchAsyncErrorsMiddleware(async(req, res) => {
 
 
 
-## Handling _unhadled promise rejection_ error : [1:16:52 - 1:19:54]
+### Handling _unhadled promise rejection_ error
+<br/>
 
 > **_unhadled promise rejection_** error বলতে , কোন কারনে link এ কোণ spelling mistake হয়ে গেলে যাতে server forcedly shut down হয়ে যায় সেই কাজ করা
 > **unhadled promise rejection error** কে অবশ্যি ExpressBoilerTemplate/backend/**server.js** file এর সবার নিচে just **export** করার আগে define করতে হয়
@@ -514,7 +515,8 @@ DB_URI="mongodb://localhost:27017/Ecommerce"
 
 
 
-### Handling _uncaught_ error : [1:19:54 - 1:21:53]
+### Handling _uncaught_ error
+<br/>
 
 > **_uncaught_** error বলতে ,  যদি project এ কোণ  **undefined variable** থাকার কারনে যেই error টা দেয় তাকে handle করতে হবে
 > **_uncaught_** কে অবশ্যি ExpressBoilerTemplate/backend/**server.js** file এর সবার  উপরে define করতে হয়
@@ -628,7 +630,8 @@ process.on("unhandledRejection", (err, promise) => {
 ```
 #### 
 
-### Handling _castError_ error : [1:21:53 - 1:24:22]
+### Handling _castError_ error
+<br/>
 
 > **_castError_** error বলতে ,  যদি  mongoDB তে  **_GET req_** করার সময় **id** এর জায়গায় অন্য কিছু দেইয় অথবা **id** shortend হয়ে যায় তখন এই error দেয়
 
