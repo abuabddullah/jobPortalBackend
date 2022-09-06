@@ -663,3 +663,307 @@ module.exports = errorMiddleware;
 ####
 
 
+
+
+## Creating Standard Model,Controller,Route with all errorhandlers
+
+
+### Standard Model:
+
+1. প্রথমে root folder এ validator কে install করে নিব 
+####
+```http
+npm i validator
+```
+####
+
+
+2. এবার **_mongoose & validators_** কে import করেনিব তারপর তারপর mongoose.schema() method দিয়ে user এর schema বা কংকাল বানাতে হবে যেখানে userSchema object এর সকল key-value এর বৈশিষ্ট define করা থাকবে, এরপর সবার নিচে collection Name, schema name সহ mongoose.model() method এর সাহায্যে model টা বানিয়ে inline exports করে দিব।
+
+> মনে রাখতে হবে, 
+>
+>> basically এই model গুলোই মূলত mongodb এর **collection** এর মত কাজ করে  আর 
+>
+>> **collection name** অবশ্যই singular form এ দিতে হবে 
+>
+>>
+>
+>> **userSchema** এর **email.unique = true** এর মানে হচ্ছে user এর collection এ একই email এর agianst এ কেবল একজনই এবই কেবল মাত্র সেই ব্যক্তিই থাকবে
+>
+>> **userSchema** এর **email.validate[0] = validator.isEmail** এটা হচ্ছে **validator** library আমাদের justify করে দিচ্ছে যে email টা কি সত্যিই valid কিনা
+>
+>> **userSchema** এর **password.select = false** এটা হচ্ছে যদি admin কখনো কোন specific user এর details অথবা সব গুলো users information কে **GET** করতে চায় তাহলে এই password এর **select** key false হওয়াতে সে কিছুতেই user এর password কে **GET** করেতে পারবে না বাকি সব পারবে
+>
+>> **userSchema** এর **avatar** এটা হচ্ছে একটা object **{}** কারন user এর profile pic একটাই থাকে
+
+####
+```http
+[[FILENAME: D:\projectsACC\Node-Mongo Advanced Crash Course\ACC_assignment_01\backend\models\usersModel.js]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+const mongoose = require("mongoose");
+const validator = require("validator");
+
+
+const userSchema = new mongoose.Schema({
+    gender: {
+        type: String,
+        required: [true, "Please Enter Your Gender"],
+        maxLength: [10, "Gender cannot exceed 10 characters"],
+        minLength: [4, "Gender should have more than 4 characters"],
+    },
+    name: {
+        type: String,
+        required: [true, "Please Enter Your Name"],
+        maxLength: [30, "Name cannot exceed 30 characters"],
+        minLength: [4, "Name should have more than 4 characters"],
+    },
+    contact: {
+        type: String,
+        required: [true, "Please Enter Your 11 digit contact number"],
+        minLength: [11, "ontact number should have 11 characters"],
+    },
+    email: {
+        type: String,
+        required: [true, "Please Enter Your Email"],
+        unique: true,
+        validate: [validator.isEmail, "Please Enter a valid Email"],
+    },
+    password: {
+        type: String,
+        required: [true, "Please Enter Your Password"],
+        minLength: [8, "Password should be greater than 8 characters"],
+        select: false,
+    },
+    photoUrl: {
+        type: String,
+        required: true,
+    },
+    role: {
+        type: String,
+        default: "user",
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+});
+
+
+const userModel = mongoose.model("User", userSchema);
+module.exports = userModel;
+```
+####
+
+
+
+## Standard Controller
+1. pagination বা limiting এর জন্য আমরা **_backend\utils\apiFeatures.js_** file এ pagination feature এর function বানিয়েছি
+
+```http
+[[FILENAME: D:\projectsACC\Node-Mongo Advanced Crash Course\ACC_assignment_01\backend\utils\apiFeatures.js]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+class ApiFeatures {
+    constructor(query, queryStr) {
+        this.query = query;
+        this.queryStr = queryStr;
+    }
+
+
+    /* pagination(resultPerPage) {
+      const currentPage = Number(this.queryStr.page) || 1;
+   
+      const skip = resultPerPage * (currentPage - 1);
+   
+      this.query = this.query.limit(resultPerPage).skip(skip);
+   
+      return this;
+    } */
+
+    pagination(limit) {
+
+        this.query = this.query.limit(limit)
+
+        return this;
+    }
+
+}
+
+module.exports = ApiFeatures;
+```
+####
+
+2.  এখানে আমরা সব ধরনের errorhandler,apifeatures দের **_import_** করে করে requiremnet অনুযায়ি যাবতিয় সব **_CRUD_** operation এর controller function গুলা বানিয়েছি
+
+####
+```http
+[[FILENAME: D:\projectsACC\Node-Mongo Advanced Crash Course\ACC_assignment_01\backend\controllers\usersController.js]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+const catchAsyncErrorsMiddleware = require("../middleware/catchAsyncErrorsMiddleware");
+const userModel = require("../models/usersModel");
+const ApiFeatures = require("../utils/apiFeatures");
+
+
+
+// create a user - AdminRoute
+exports.createUser = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const user = await userModel.create(req.body);
+    res.status(201).json({
+        success: true,
+        user,
+    });
+})
+
+
+// Get All users
+exports.getAllUsers = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const limit = req.query.limit;
+    const usersCount = await userModel.countDocuments();
+
+    const apiFeature = new ApiFeatures(userModel.find(), req.query)
+        .pagination(limit);
+
+    const users = await apiFeature.query;
+
+    res.status(200).json({
+        success: true,
+        message: limit && limit <= usersCount ? `${limit} user is showing out of ${usersCount} users` : `All ${usersCount} users are showing`,
+        users,
+    });
+});
+
+
+// update a User - AdminRoute
+exports.updateUser = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const id = req.params.id;
+    const updateInfo = req.body;
+    const user = await userModel.findById(id);
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            message: "User not found",
+        });
+    }
+    const updatedUser = await userModel.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
+    res.status(200).json({
+        success: true,
+        message: "User updated successfully",
+        updatedUser,
+    });
+})
+
+
+// delete a User - AdminRoute
+exports.deleteUser = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const id = req.params.id;
+    const user = await userModel.findById(id);
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            message: "User not found",
+        });
+    }
+
+    await user.remove();
+    // await productModel.findByIdAndDelete(id); // এটাও চলবে
+
+    res.status(200).json({
+        success: true,
+        message: "User deleted successfully",
+    });
+})
+
+
+// Get User details by ID
+exports.getUserDetails = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const id = req.params.id;
+    const user = await userModel.findById(id);
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            message: "User not found",
+        });
+    }
+    res.status(200).json({
+        success: true,
+        message: "getUserDetails route is working",
+        user,
+    });
+})
+
+
+// Get a random user from the database
+exports.getRandomUser = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const users = await userModel.find();
+    const randomUser = users[Math.floor(Math.random() * users.length)];
+    res.status(200).json({
+        success: true,
+        message: "getRandomUser route is working",
+        randomUser,
+    });
+})
+
+// update multiple users information based on given id and information through body
+exports.updateMultipleUsers = catchAsyncErrorsMiddleware(async (req, res, next) => {
+    const users = await userModel.updateMany(
+        { _id: { $in: req.body.ids } },
+        { $set: { name: req.body.name } }
+    );
+    res.status(200).json({
+        success: true,
+        message: "updateMultipleUsers route is working",
+        users,
+    });
+})
+```
+####
+
+### Standar Routes
+
+1.  এখানে আমরা সব ধরনের controller functions দের **_import_** করে করে requiremnet অনুযায়ি যাবতিয় সব **_CRUD_** operation এর controller function গুলার জন্য route বানিয়েছি
+
+####
+```http
+[[FILENAME: D:\projectsACC\Node-Mongo Advanced Crash Course\ACC_assignment_01\backend\routes\usersRoutes.js]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+const express = require("express");
+const { getAllUsers, createUser, updateUser, deleteUser, getUserDetails, getRandomUser, updateMultipleUsers } = require("../controllers/usersController");
+
+
+
+const router = express.Router();
+
+
+
+router.route("/random/").get(getRandomUser);
+router.route("/all").get(getAllUsers);
+router.route("/save").post(createUser);
+router.route("/update/:id").patch(updateUser);
+router.route("/delete/:id").delete(deleteUser);
+router.route("/random/:id").get(getUserDetails);
+router.route("/bulk-update").patch(updateMultipleUsers);
+
+
+
+
+
+
+
+module.exports = router;
+```
+####
+
+
+## Deploy in MongoDB
+
+> Very simple 
+>> Mongodb তে নতুন একটা project বানিয়ে database এর ভতরের connect এ click করে তার ভিতরের **_uri_** টাকে copy করে নিব
+>
+>> **_backend\config\config.env_** এ গিয়ে **_DB_URI_** এর value হিসেবে assign করে দিব
+>>> just  একটা কাজ extra করতে হবে আর তাহল,
+>>>> **_uri_** এর শেষে **_"/?"_** এর বদলে _**/ACC_ASSIGNMENT_01?**_ দিতে হবে
+>>>>> এখানে **_ACC_ASSIGNMENT_01_** হচ্ছে databse collection এর নাম
+
