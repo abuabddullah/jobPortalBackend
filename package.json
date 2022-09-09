@@ -5,7 +5,7 @@
   "main": "backend/server.js",
   "scriptsComments": {
     "start": "node assacc01/index.js",
-    "start-dev": "nodemon assacc01/index.js",
+    "dev": "nodemon assacc01/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "scripts": {
