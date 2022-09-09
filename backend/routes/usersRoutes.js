@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 
-router.route("/random/").get(getRandomUser);
+router.route("/random").get(getRandomUser);
 router.route("/all").get(getAllUsers);
 router.route("/save").post(createUser);
 router.route("/update/:id").patch(updateUser);
