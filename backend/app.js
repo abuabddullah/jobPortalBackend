@@ -11,12 +11,12 @@ app.use(express.json());
 
 
 //Route imports
-const usersRouter = require('./routes/usersRoutes');
+const usersRouter = require('./routes/v1/usersRoutes');
 
 
 
 //invoking routes
-app.use('/user', usersRouter);
+app.use('/api/v1', usersRouter);
 
 
 // Not found route
