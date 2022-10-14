@@ -5,6 +5,15 @@ const router = express.Router();
 
 const jobController = require('./../../controllers/v1/jobController.js');
 
+
+
+// cadidate routes
+router.route('/jobs').get(jobController.getAllJobs);
+router.route('/jobs/:id').get(jobController.getAJob);
+
+
+
+// authorized routes
 router.use(verifyJWT,verifyRole("hiring-manager","admin"));
 router.route('/jobs').post(jobController.createAJob);
 router.route('/manager/jobs').get(jobController.getAllJobsByManager);

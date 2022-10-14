@@ -58,6 +58,10 @@ const jobSchema = mongoose.Schema(
         required: [true, "Please enter the hiring manager id"],
       }
     },
+    deadline:{
+      type: Date,
+      required: [true, "Please enter the deadline"],
+    },
   },
   {
     timestamps: true,
