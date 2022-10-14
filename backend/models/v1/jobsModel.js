@@ -4,6 +4,10 @@ const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const { ObjectId } = mongoose.Schema.Types;
 
+const dateVar = new Date();
+
+dateVar.setDate(dateVar.getDate() + 3);
+
 const jobSchema = mongoose.Schema(
   {
     applyCount: {
@@ -48,20 +52,31 @@ const jobSchema = mongoose.Schema(
       },
     },
     hiringBy: {
-      name:{
+      name: {
         type: String,
         required: [true, "Please enter the hiring manager name"],
       },
-      id:{
+      id: {
         type: ObjectId,
         ref: "User",
         required: [true, "Please enter the hiring manager id"],
-      }
+      },
     },
-    deadline:{
+    candidates: [
+      {
+        type: ObjectId,
+        ref: "User",
+      },
+    ],
+    deadline: {
       type: Date,
       required: [true, "Please enter the deadline"],
+      default: dateVar,
     },
+    resumeURL: {
+      type: String,
+    },
+
   },
   {
     timestamps: true,
