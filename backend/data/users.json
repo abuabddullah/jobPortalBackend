@@ -1,79 +1,74 @@
-[{
-  "_id": {
-    "$oid": "63496653e71e0c70adfa5796"
+[
+  {
+    "email": "admin@gmail.com",
+    "password": "$2a$10$PMRHj1Ijs6O526pyMjbk6uXvi9gjnzeukHoXzG8Mqef/NQKaN/3Ia",
+    "role": "admin",
+    "firstName": "Mezbaul Abedin",
+    "lastName": "Sami",
+    "contactNumber": "01939032974",
+    "qualification": "Bachelors",
+    "resumeURL": "https://drive.google.com/file/d/13jEh0fmXSdu1F7GT836Vr0rNcZ7PNZa-/view?usp=sharing",
+    "imageURL": "https://i.ibb.co/WnFSs9Y/unnamed.webp",
+    "status": "active",
+    "appliedjobs": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1665754707061"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1665754707061"
+      }
+    },
+    "__v": 0
   },
-  "email": "admin@gmail.com",
-  "password": "$2a$10$PMRHj1Ijs6O526pyMjbk6uXvi9gjnzeukHoXzG8Mqef/NQKaN/3Ia",
-  "role": "admin",
-  "firstName": "Mezbaul Abedin",
-  "lastName": "Sami",
-  "contactNumber": "01939032974",
-  "qualification": "Bachelors",
-  "resumeURL": "https://drive.google.com/file/d/13jEh0fmXSdu1F7GT836Vr0rNcZ7PNZa-/view?usp=sharing",
-  "imageURL": "https://i.ibb.co/WnFSs9Y/unnamed.webp",
-  "status": "active",
-  "appliedjobs": [],
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1665754707061"
-    }
+  {
+    "email": "asif@gmail.com",
+    "password": "$2a$10$1YgpC031wLGOoYgRtwcAieXkv7qnOTE8o.Is73Bm9QympUsGwkHsy",
+    "role": "hiring-manager",
+    "firstName": "Mezbaul Abedin",
+    "lastName": "Sami",
+    "contactNumber": "01939032974",
+    "qualification": "Bachelors",
+    "resumeURL": "https://drive.google.com/file/d/13jEh0fmXSdu1F7GT836Vr0rNcZ7PNZa-/view?usp=sharing",
+    "imageURL": "https://i.ibb.co/WnFSs9Y/unnamed.webp",
+    "status": "active",
+    "appliedjobs": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1665754778598"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1665754778598"
+      }
+    },
+    "__v": 0
   },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1665754707061"
-    }
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "6349669ae71e0c70adfa5798"
-  },
-  "email": "asif@gmail.com",
-  "password": "$2a$10$1YgpC031wLGOoYgRtwcAieXkv7qnOTE8o.Is73Bm9QympUsGwkHsy",
-  "role": "hiring-manager",
-  "firstName": "Mezbaul Abedin",
-  "lastName": "Sami",
-  "contactNumber": "01939032974",
-  "qualification": "Bachelors",
-  "resumeURL": "https://drive.google.com/file/d/13jEh0fmXSdu1F7GT836Vr0rNcZ7PNZa-/view?usp=sharing",
-  "imageURL": "https://i.ibb.co/WnFSs9Y/unnamed.webp",
-  "status": "active",
-  "appliedjobs": [],
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1665754778598"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1665754778598"
-    }
-  },
-  "__v": 0
-},{
-  "_id": {
-    "$oid": "634966b1e71e0c70adfa579a"
-  },
-  "email": "samiya@gmail.com",
-  "password": "$2a$10$EH0PUR7TGnX88MpkLSz7fuGrQrbRNP1bnSqFiUi2NdduYRWCtyMne",
-  "role": "candidate",
-  "firstName": "Mezbaul Abedin",
-  "lastName": "Sami",
-  "contactNumber": "01939032974",
-  "qualification": "Bachelors",
-  "resumeURL": "https://drive.google.com/file/d/13jEh0fmXSdu1F7GT836Vr0rNcZ7PNZa-/view?usp=sharing",
-  "imageURL": "https://i.ibb.co/WnFSs9Y/unnamed.webp",
-  "status": "active",
-  "appliedjobs": [],
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1665754801884"
-    }
-  },
-  "updatedAt": {
-    "$date": {
-      "$numberLong": "1665754801884"
-    }
-  },
-  "__v": 0
-}]
+  {
+    "email": "samiya@gmail.com",
+    "password": "$2a$10$EH0PUR7TGnX88MpkLSz7fuGrQrbRNP1bnSqFiUi2NdduYRWCtyMne",
+    "role": "candidate",
+    "firstName": "Mezbaul Abedin",
+    "lastName": "Sami",
+    "contactNumber": "01939032974",
+    "qualification": "Bachelors",
+    "resumeURL": "https://drive.google.com/file/d/13jEh0fmXSdu1F7GT836Vr0rNcZ7PNZa-/view?usp=sharing",
+    "imageURL": "https://i.ibb.co/WnFSs9Y/unnamed.webp",
+    "status": "active",
+    "appliedjobs": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1665754801884"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1665754801884"
+      }
+    },
+    "__v": 0
+  }
+]
