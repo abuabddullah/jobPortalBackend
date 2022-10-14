@@ -11,17 +11,19 @@ app.use(express.json());
 
 
 //Route imports
-const usersRouter = require('./routes/v1/usersRoutes');
+const usersRouter = require('./routes/v1/usersRoute');
+const jobsRouter = require('./routes/v1/jobsRoute');
 
 
 
 //invoking routes
 app.use('/api/v1', usersRouter);
+app.use('/api/v1', jobsRouter);
 
 
 // Not found route
 app.all("*", (req, res) => {
-    res.send("NO route found.");
+    res.send("NO route found.😜");
 });
 
 

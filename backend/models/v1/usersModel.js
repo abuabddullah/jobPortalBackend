@@ -125,16 +125,26 @@ const userSchema = mongoose.Schema(
     },
     contactNumber: {
       type: String,
+      required: [true, "Please provide a contact number"],
       validate: [
         validator.isMobilePhone,
         "Please provide a valid contact number",
       ],
     },
 
-    qualification:String,
+    qualification:{
+      type: String,
+      required: [true, "Please provide a qualification"],
+      enum: {
+        values: ["Bachelors", "Masters", "PhD","SSC","HSC"],
+        message:
+          "Qualification unit can't be {VALUE} must be either Bachelors / Masters / PhD / SSC / HSC",
+      },
+    },
 
     resumeURL: {
       type: String,
+      required: [true, "Please provide a resume URL"],
       validate: [validator.isURL, "Please provide a valid url"],
     },
 
@@ -175,23 +185,10 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-userSchema.methods.comparePassword = function (password, hash) {
-  const isPasswordCorrect = bcrypt.compareSync(password, hash);
-  return isPasswordCorrect;
+userSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.generateConfirmationToken = function () {
-  const token = crypto.randomBytes(32).toString("hex");
-
-  this.confirmationToken = token;
-
-  const date = new Date();
-
-  date.setDate(date.getDate() + 1);
-  this.confirmationTokenExpires = date;
-
-  return token;
-};
 
 const UserModel = mongoose.model("User", userSchema);
 
