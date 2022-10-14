@@ -1,10 +1,11 @@
 const ApiFeatures = require("../../utils/apiFeatures");
+const catchAsyncErrorsMiddleware = require("./../../middleware/catchAsyncErrorsMiddleware");
 const JobsModel = require("./../../models/v1/jobsModel");
 const UsersModel = require("./../../models/v1/usersModel");
 
 // cadidate controllers
 //  filter jobs by location, job type, salary range and also able to sort jobs
-exports.getAllJobs = async (req, res, next) => {
+exports.getAllJobs = catchAsyncErrorsMiddleware(async (req, res, next) => {
   try {
     const apiFeature = new ApiFeatures(JobsModel.find(), req.query)
       .filter()
@@ -24,9 +25,9 @@ exports.getAllJobs = async (req, res, next) => {
       message: err,
     });
   }
-};
+});
 
-exports.getAJob = async (req, res, next) => {
+exports.getAJob = catchAsyncErrorsMiddleware(async (req, res, next) => {
   try {
     const job = await JobsModel.findById(req.params.id);
     if (!job) {
@@ -49,9 +50,9 @@ exports.getAJob = async (req, res, next) => {
       message: err,
     });
   }
-};
+});
 
-exports.applyAJob = async (req, res, next) => {
+exports.applyAJob = catchAsyncErrorsMiddleware(async (req, res, next) => {
   try {
     // 1. find job by req.params.id if not found send res
     const job = await JobsModel.findById(req.params.id);
@@ -103,10 +104,10 @@ exports.applyAJob = async (req, res, next) => {
       message: err,
     });
   }
-};
+});
 
 // authorized controllers
-exports.createAJob = async (req, res, next) => {
+exports.createAJob = catchAsyncErrorsMiddleware(async (req, res, next) => {
   try {
     const job = await JobsModel.create(req.body);
     res.status(201).json({
@@ -120,9 +121,9 @@ exports.createAJob = async (req, res, next) => {
       message: err.message,
     });
   }
-};
+});
 
-exports.getAllJobsByManager = async (req, res, next) => {
+exports.getAllJobsByManager = catchAsyncErrorsMiddleware(async (req, res, next) => {
   try {
     const jobs = await JobsModel.find({ manager: req.user._id });
     res.status(200).json({
@@ -136,9 +137,9 @@ exports.getAllJobsByManager = async (req, res, next) => {
       message: err.message,
     });
   }
-};
+});
 
-exports.getAJobByManager = async (req, res, next) => {
+exports.getAJobByManager = catchAsyncErrorsMiddleware(async (req, res, next) => {
   try {
     const jobID = req.params.id;
     const jobs = await JobsModel.find({ manager: req.user._id });
@@ -160,9 +161,9 @@ exports.getAJobByManager = async (req, res, next) => {
       message: err.message,
     });
   }
-};
+});
 
-exports.updateAJobById = async (req, res, next) => {
+exports.updateAJobById = catchAsyncErrorsMiddleware(async (req, res, next) => {
   try {
     const jobID = req.params.id;
     const job = await JobsModel.findByIdAndUpdate(jobID, req.body, {
@@ -187,4 +188,4 @@ exports.updateAJobById = async (req, res, next) => {
       message: err.message,
     });
   }
-};
+});
